@@ -45,7 +45,7 @@ func TestGetAPIKey(t *testing.T) { // t is the test object
 			scenarioName:   "malformed header - not ApiKey prefix",
 			inputHeaders:   http.Header{"Authorization": []string{"Bearer abc123"}},
 			expectedAPIKey: "",
-			expectedError:  "",
+			expectedError:  errors.New("malformed authorization header"),
 		},
 	}
 
