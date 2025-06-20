@@ -1,0 +1,28 @@
+# cd.yml
+name: cd
+
+on:
+  # only run CD when PR merged to main
+  push:
+    branches: [main] 
+
+jobs:
+  deploy:
+    # run on the latest ubuntu runner
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      # clone repo code
+      - name: Check out code
+        uses: actions/checkout@v4 
+
+      # install go
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.23.0"
+
+      # build the app
+      - name: Build App
+        run: ./scripts/buildprod.sh
