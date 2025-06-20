@@ -1,38 +1,57 @@
+# ci.yml
 name: ci
 
 on:
+  # only run CI on pull requests to main
   pull_request:
-    branches: [main]
+    branches: [main] 
 
 jobs:
   tests:
+    # run on the latest ubuntu runner
     name: Tests
     runs-on: ubuntu-latest
 
     steps:
+      # clone repo code
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 
 
+      # install go
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: "1.23.0"
 
+      # run unit tests
       - name: Run Unit Tests
         run: go test -cover ./...
 
   style:
+    # run on the latest ubuntu runner
     name: Style
     runs-on: ubuntu-latest
 
     steps:
+      # clone repo code
       - name: Check out code
         uses: actions/checkout@v4
 
+      # install go
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: "1.23.0"
 
+      # run go formatter
       - name: Check Formatting
         run: test -z $(go fmt ./...)
+
+      # install static check
+      - name: Install staticcheck
+        run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+      # run static check
+      - name: Run staticcheck
+        run: staticcheck ./...
+
